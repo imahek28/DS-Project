@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ASL Recognition</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="wrapper fadeInDown">
+        <div id="formContent">
+            
+                   
+                    <div class="fadeIn first">
+                        <h1>Sign Language Recognition</h1>
+                        <br>
+                    </div>
+
+                    <form action="/predict" method="post" enctype="multipart/form-data">
+                        <input type="file" name="image" accept="image/*" required class="fadeIn second">
+                        <button type="submit">Predict</button>
+                    </form>
+                    <div>
+                        <h2>Recognized Sign: <span id="result"></span></h2>
+                    </div>
+                    <p>Developed by Mahek Intwala(9423) , Ayush Batra(9244) , Dhruv Das (9305) </p>
+                </div>
+
+        </div>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        // JavaScript to handle the form submission and display the result
+        const form = document.querySelector("form");
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(form);
+
+            try {
+                const response = await axios.post("http://127.0.0.1:5000/predict", formData);
+
+                if (response.data.error) {
+                    document.getElementById("result").textContent = "Error: " + response.data.error;
+                } else {
+                    document.getElementById("result").textContent = response.data.predicted;
+                }
+            } catch (error) {
+                document.getElementById("result").textContent = "Error: " + error.message;
+            }
+        });
+    </script>
+</body>
+</html>
